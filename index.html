@@ -4,120 +4,62 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
-<title>3D Cost — калькулятор печати</title>
+<title>3D COST — себестоимость печати</title>
 <style>
-:root{--bg:#f3f5f8;--card:#fff;--ink:#172033;--muted:#748094;--line:#e5e9f0;--accent:#2563eb;--green:#0f9f6e;--shadow:0 8px 28px rgba(20,35,60,.07)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-header{background:#111827;color:#fff;padding:24px 18px 28px} .wrap{max-width:1040px;margin:auto}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:22px;font-weight:850;letter-spacing:.08em}.tag{font-size:12px;color:#cbd5e1;border:1px solid #465164;border-radius:999px;padding:5px 10px}
-header p{color:#aeb9ca;margin:8px 0 0;font-size:13px}
-main{max-width:1040px;margin:-12px auto 40px;padding:0 14px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-.card h2{font-size:16px;margin:0 0 14px}.sub{font-size:12px;color:var(--muted);margin:-8px 0 14px}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
-.field input,.field select{width:100%;height:43px;border:1px solid #dce2eb;border-radius:10px;padding:0 11px;font:inherit;color:var(--ink);background:#fff;outline:none}
-.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #2563eb18}
-.unit{position:relative}.unit input{padding-right:40px}.unit span{position:absolute;right:11px;top:11px;color:#8a95a6;font-size:12px;pointer-events:none}
-.result{background:#111827;color:white;border-radius:18px;padding:20px;box-shadow:var(--shadow)}
-.result .eyebrow{color:#aeb9ca;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
-.big{font-size:36px;font-weight:850;letter-spacing:-.04em;margin:3px 0 2px}.big small{font-size:15px;font-weight:600}
-.result .hint{font-size:12px;color:#aeb9ca}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.stat{background:#202b3d;border-radius:12px;padding:11px}.stat span{display:block;color:#aeb9ca;font-size:11px}.stat b{display:block;font-size:18px;margin-top:3px}
-.breakdown{margin-top:14px}.line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #ffffff18;font-size:13px}.line:last-child{border:0}.line span{color:#c2cada}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
-button{border:0;border-radius:10px;padding:11px 14px;font:600 13px inherit;cursor:pointer}
-.primary{background:var(--accent);color:white}.secondary{background:#edf2f8;color:#253047}.danger{background:#fff0f0;color:#b42318}
-.note{font-size:11px;color:var(--muted);margin-top:12px}
-.history{margin-top:14px}.history table{width:100%;border-collapse:collapse;font-size:12px}.history th,.history td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--line)}.history th{color:var(--muted);font-weight:600}
-footer{text-align:center;color:var(--muted);font-size:11px;padding:12px}
-@media(max-width:720px){.grid{grid-template-columns:1fr}.fields{gap:10px}.card{padding:15px}.big{font-size:34px}header{padding:20px 16px 25px}.history{overflow:auto}}
-@media(max-width:380px){.fields{grid-template-columns:1fr 1fr}.field input{font-size:14px}}
+:root{--bg:#f3f5f8;--card:#fff;--ink:#172033;--muted:#748094;--line:#e5e9f0;--accent:#2563eb;--green:#0f9f6e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+header{background:#111827;color:#fff;padding:25px 18px 38px}.wrap{max-width:680px;margin:auto}.brand{font-size:23px;font-weight:850;letter-spacing:.08em}header p{color:#aeb9ca;margin:7px 0 0;font-size:13px}
+main{max-width:680px;margin:-17px auto 35px;padding:0 14px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 8px 28px rgba(20,35,60,.07)}
+h2{font-size:17px;margin:0 0 16px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-size:13px;color:var(--muted);margin:0 0 6px}.unit{position:relative}.unit input{width:100%;height:48px;border:1px solid #dce2eb;border-radius:11px;padding:0 48px 0 12px;font:inherit;color:var(--ink);background:#fff;outline:none}.unit input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #2563eb18}.suffix{position:absolute;right:12px;top:13px;color:#8a95a6;font-size:13px;pointer-events:none}
+.fixed{grid-column:1/-1;background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;gap:12px;font-size:14px}.fixed span{color:var(--muted)}.fixed b{white-space:nowrap}
+.result{margin-top:15px;background:#111827;color:#fff;border-radius:20px;padding:22px}.eyebrow{color:#aeb9ca;font-size:12px;letter-spacing:.06em;text-transform:uppercase}.big{font-size:40px;font-weight:850;letter-spacing:-.04em;margin:5px 0}.sub{font-size:13px;color:#aeb9ca}.batch{border-top:1px solid #ffffff20;margin-top:17px;padding-top:14px;display:flex;justify-content:space-between;gap:12px;font-size:14px}.batch b{font-size:17px}
+button{width:100%;margin-top:16px;border:0;border-radius:11px;padding:13px;background:var(--accent);color:#fff;font:600 15px inherit;cursor:pointer}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
+@media(max-width:420px){.fields{gap:12px}.card{padding:16px}.big{font-size:35px}.unit input{font-size:15px}}
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="top"><div class="brand">3D COST</div><div class="tag">Bambu Lab A1</div></div><p>Калькулятор себестоимости · расчёт прямо в браузере</p></div></header>
+<header><div class="wrap"><div class="brand">3D COST</div><p>Простой расчёт себестоимости 3D-печати</p></div></header>
 <main>
-<div class="grid">
 <section class="card">
-<h2>Параметры печати</h2><p class="sub">Данные одной печатной задачи из Bambu Studio</p>
+<h2>Параметры печати</h2>
 <div class="fields">
-<div class="field"><label>Название изделия</label><input id="name" value="Новая модель"></div>
-<div class="field"><label>Материал</label><select id="material"><option>PLA</option><option>PETG</option><option>TPU</option><option>ABS / ASA</option><option>Другой</option></select></div>
-<div class="field"><label>Время печати</label><div class="unit"><input id="printHours" type="number" min="0" step=".1" value="6"><span>час</span></div></div>
-<div class="field"><label>Пластик на всю печать</label><div class="unit"><input id="grams" type="number" min="0" step="1" value="100"><span>г</span></div></div>
-<div class="field"><label>Готовых изделий</label><div class="unit"><input id="qty" type="number" min="1" step="1" value="47"><span>шт</span></div></div>
-<div class="field"><label>Цена пластика</label><div class="unit"><input id="filamentPrice" type="number" min="0" step="10" value="1500"><span>₽/кг</span></div></div>
+<div><label for="grams">Вес пластика на всю печать</label><div class="unit"><input id="grams" type="number" min="0" step="1" value="100"><span class="suffix">г</span></div></div>
+<div><label for="filamentPrice">Стоимость пластика за кг</label><div class="unit"><input id="filamentPrice" type="number" min="0" step="10" value="1500"><span class="suffix">₽/кг</span></div></div>
+<div><label for="qty">Количество изделий на столе</label><div class="unit"><input id="qty" type="number" min="1" step="1" value="47"><span class="suffix">шт.</span></div></div>
+<div><label for="hours">Время печати</label><div class="unit"><input id="hours" type="number" min="0" step=".1" value="6"><span class="suffix">час</span></div></div>
+<div class="fixed"><span>Амортизация принтера</span><b>100 ₽ / час</b></div>
+<div class="fixed"><span>Электроэнергия</span><b>10 ₽ / час</b></div>
 </div>
+<div class="result" aria-live="polite">
+<div class="eyebrow">Себестоимость одного изделия</div>
+<div class="big" id="unitCost">— ₽</div>
+<div class="sub" id="perBatch">За всю печать: — ₽</div>
+<div class="batch"><span>Количество изделий</span><b id="quantityResult">— шт.</b></div>
+</div>
+<button id="calculate" type="button">Рассчитать</button>
 </section>
-<section class="card">
-<h2>Принтер и дополнительные затраты</h2><p class="sub">Настройки оборудования можно менять под реальные условия</p>
-<div class="fields">
-<div class="field"><label>Амортизация принтера за час</label><div class="unit"><input id="printerHourRate" type="number" min="0" step="5" value="100"><span>₽/час</span></div></div>
-<div class="field"><label>Средняя мощность</label><div class="unit"><input id="power" type="number" min="0" step=".01" value=".15"><span>кВт</span></div></div>
-<div class="field"><label>Тариф электричества</label><div class="unit"><input id="electricRate" type="number" min="0" step=".1" value="10"><span>₽/кВт·ч</span></div></div>
-<div class="field"><label>Обслуживание и расходники</label><div class="unit"><input id="serviceHour" type="number" min="0" step=".5" value="2"><span>₽/час</span></div></div>
-<div class="field"><label>Труд на всю печать</label><div class="unit"><input id="labor" type="number" min="0" step="10" value="0"><span>₽</span></div></div>
-<div class="field"><label>Прочие расходы на всю печать</label><div class="unit"><input id="other" type="number" min="0" step="10" value="0"><span>₽</span></div></div>
-<div class="field"><label>Резерв на брак</label><div class="unit"><input id="defect" type="number" min="0" max="100" step="1" value="5"><span>%</span></div></div>
-</div>
-</section>
-<section class="result">
-<div class="eyebrow">Полная себестоимость одного изделия</div>
-<div class="big" id="unitCost">— <small>₽/шт.</small></div>
-<div class="hint" id="batchCost">Общая себестоимость партии: —</div>
-<div class="stats">
-<div class="stat"><span>Расход пластика на 1 шт.</span><b id="unitGrams">—</b></div>
-<div class="stat"><span>Время печати на 1 шт.</span><b id="unitHours">—</b></div>
-<div class="stat"><span>Всего изделий в партии</span><b id="batchQty">—</b></div>
-<div class="stat"><span>Общие затраты на партию</span><b id="totalCost">—</b></div>
-</div>
-<div class="breakdown">
-<div class="line"><span>Пластик</span><b id="rPlastic">—</b></div>
-<div class="line"><span>Электричество</span><b id="rPower">—</b></div>
-<div class="line"><span>Амортизация принтера</span><b id="rDep">—</b></div>
-<div class="line"><span>Обслуживание</span><b id="rService">—</b></div>
-<div class="line"><span>Резерв на брак</span><b id="rDefect">—</b></div>
-<div class="line"><span>Труд и прочее</span><b id="rExtra">—</b></div>
-</div>
-<div class="actions"><button class="primary" id="calculate">Рассчитать</button><button class="secondary" id="save">Сохранить расчёт</button><button class="secondary" id="csv">Скачать CSV</button><button class="secondary" id="reset">Сбросить</button></div>
-<div class="note">Расчёт обновляется автоматически при изменении полей. Кнопка «Рассчитать» запускает его вручную. Амортизация принтера рассчитывается по фиксированной ставке за каждый час печати (по умолчанию 100 ₽/час). Обслуживание и электроэнергия учитываются отдельно; резерв брака добавляется к производственным затратам.</div>
-</section>
-</div>
-<section class="card history">
-<h2>История расчётов</h2><div id="historyWrap"><p class="sub">Сохранённых расчётов пока нет.</p></div>
-</section>
-<footer>3D COST · Данные хранятся локально в этом браузере и не отправляются на сервер.</footer>
+<footer>3D COST · Расчёт выполняется прямо в браузере</footer>
 </main>
 <script>
-const ids=['name','material','printHours','grams','qty','filamentPrice','printerHourRate','power','electricRate','serviceHour','labor','other','defect'];
 const $=id=>document.getElementById(id);
-const val=id=>Number($(id).value)||0;
-const rub=n=>new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:2}).format(Number.isFinite(n)?n:0);
-function calc(){
- const h=val('printHours'),g=val('grams'),q=Math.max(1,Math.floor(val('qty')));
- const plastic=g*val('filamentPrice')/1000,electricity=h*val('power')*val('electricRate');
- const depreciation=h*val('printerHourRate'),service=h*val('serviceHour');
- const extra=val('labor')+val('other'),base=plastic+electricity+depreciation+service+extra;
- const defect=base*val('defect')/100,total=base+defect,unit=total/q;
- $('unitCost').innerHTML=rub(unit)+' <small>₽/шт.</small>';$('batchCost').textContent='Общая себестоимость партии: '+rub(total);
- $('unitGrams').textContent=(g/q).toFixed(1).replace('.',',')+' г';$('unitHours').textContent=(h/q).toFixed(2).replace('.',',')+' ч';
- $('batchQty').textContent=q+' шт.';$('totalCost').textContent=rub(total);
- [['rPlastic',plastic],['rPower',electricity],['rDep',depreciation],['rService',service],['rDefect',defect],['rExtra',extra]].forEach(([id,n])=>$(id).textContent=rub(n));
- return {name:$('name').value,material:$('material').value,h,g,q,unit,total,date:new Date().toLocaleString('ru-RU')};
+const num=id=>Math.max(0,Number($(id).value)||0);
+const money=n=>new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+function calculate(){
+ const grams=num('grams'),price=num('filamentPrice'),qty=Math.max(1,Math.floor(num('qty'))),hours=num('hours');
+ const plastic=grams*price/1000;
+ const printer=hours*100;
+ const electricity=hours*10;
+ const batch=plastic+printer+electricity;
+ const unit=batch/qty;
+ $('unitCost').textContent=money(unit);
+ $('perBatch').textContent='За всю печать: '+money(batch);
+ $('quantityResult').textContent=qty+' шт.';
 }
-ids.forEach(id=>{ $(id).addEventListener('input',calc);$(id).addEventListener('change',calc); });
-function getHistory(){try{return JSON.parse(localStorage.getItem('3dcost_history')||'[]')}catch(e){return[]}}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function drawHistory(){const a=getHistory();if(!a.length){$('historyWrap').innerHTML='<p class="sub">Сохранённых расчётов пока нет.</p>';return}
- $('historyWrap').innerHTML='<table><thead><tr><th>Дата</th><th>Изделие</th><th>Партия</th><th>Себест./шт.</th><th>Затраты партии</th></tr></thead><tbody>'+a.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.name)+'</td><td>'+x.q+' шт.</td><td>'+rub(x.unit)+'</td><td>'+rub(x.total)+'</td></tr>').join('')+'</tbody></table>'}
-$('calculate').onclick=()=>{calc();$('calculate').textContent='Готово ✓';setTimeout(()=>$('calculate').textContent='Рассчитать',1100)};
-$('save').onclick=()=>{const x=calc(),a=getHistory();a.unshift(x);localStorage.setItem('3dcost_history',JSON.stringify(a.slice(0,50)));drawHistory()};
-$('reset').onclick=()=>{if(!confirm('Вернуть исходные параметры?'))return;const d={name:'Новая модель',material:'PLA',printHours:6,grams:100,qty:47,filamentPrice:1500,printerHourRate:100,power:.15,electricRate:10,serviceHour:2,labor:0,other:0,defect:5};ids.forEach(k=>$(k).value=d[k]);calc()};
-$('csv').onclick=()=>{const x=calc(),rows=[['Показатель','Значение'],['Изделие',x.name],['Материал',x.material],['Время печати, ч',x.h],['Пластик, г',x.g],['Количество, шт.',x.q],['Себестоимость партии, ₽',x.total],['Себестоимость штуки, ₽',x.unit]];
- const csv='\uFEFF'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\n'),a=document.createElement('a'),url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='3d-cost-'+Date.now()+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-calc();drawHistory();
+['grams','filamentPrice','qty','hours'].forEach(id=>$(id).addEventListener('input',calculate));
+$('calculate').addEventListener('click',calculate);
+calculate();
 </script>
-</body></html>
+</body>
+</html>
