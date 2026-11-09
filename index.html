@@ -1,100 +1,76 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101d3b">
-<title>3D COST — себестоимость печати</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101d3b">
+<title>3D COST — калькулятор себестоимости 3D-печати</title>
 <style>
-:root{--navy:#101d3b;--navy2:#142d5b;--blue:#0878f9;--ink:#142344;--muted:#627596;--line:#cbd7e9;--pale:#f4f7fc}
-*{box-sizing:border-box}
-body{margin:0;background:linear-gradient(180deg,#eaf1fc 0%,#f7f9fd 60%);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-header{background:radial-gradient(ellipse at 85% 80%,#164b9b 0%,transparent 34%),linear-gradient(115deg,#0b1732,#142d5b 72%,#09152e);color:#fff;padding:28px 22px 48px;overflow:hidden}
-.header-inner{max-width:980px;margin:auto;display:flex;align-items:center;gap:20px;position:relative}
-.logo{width:82px;height:82px;flex:0 0 82px;color:#21b7ff}
-.logo svg{width:100%;height:100%}
-.brand{font-size:clamp(28px,4vw,46px);font-weight:850;letter-spacing:.035em;line-height:1.05}
-header p{color:#bdcce8;margin:8px 0 0;font-size:clamp(13px,2vw,20px)}
-.printer-art{margin-left:auto;width:115px;height:90px;flex:0 0 115px;color:#26baff;opacity:.9}
-main{max-width:980px;margin:-22px auto 24px;padding:0 18px;position:relative}
-.card{background:rgba(255,255,255,.97);border:1px solid #e3eaf5;border-radius:30px;padding:28px;box-shadow:0 16px 42px rgba(20,49,96,.13)}
-h2{display:flex;align-items:center;gap:14px;font-size:clamp(22px,3vw,34px);margin:0 0 24px;font-weight:800}
-h2 svg{width:38px;height:38px;flex:0 0 38px}
-.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}
-.field{min-width:0;min-height:126px;border:1.5px solid #c7d4e8;border-radius:20px;background:linear-gradient(145deg,#f8faff,#f1f5fc);padding:13px 14px;display:grid;grid-template-columns:68px minmax(0,1fr);align-items:center;gap:14px}
-.field-icon{width:68px;height:68px;border-radius:19px;background:#e1ecff;color:#1554ae;display:grid;place-items:center}
-.field-icon svg{width:40px;height:40px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.field-content{min-width:0}
-label{display:block;color:#17294b;font-size:clamp(13px,1.65vw,19px);line-height:1.2;margin:0 0 9px}
-.unit{position:relative}
-.unit input{display:block;width:100%;height:56px;border:1.5px solid #bdcbe0;border-radius:14px;background:#fff;padding:0 68px 0 14px;color:#142344;font:700 clamp(19px,2.5vw,27px) -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;outline:none;box-shadow:inset 0 1px 2px rgba(15,38,75,.04);min-width:0}
-.unit input:focus{border-color:#1685f8;box-shadow:0 0 0 3px #1685f822}
-.suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#64799e;font-size:clamp(12px,1.7vw,18px);pointer-events:none;white-space:nowrap}
-.result{margin-top:24px;background:radial-gradient(ellipse at 95% 100%,#174b9d 0%,transparent 38%),linear-gradient(120deg,#101d3b,#142d5b 72%,#0c1a36);color:#fff;border-radius:26px;padding:27px 32px;box-shadow:0 12px 26px rgba(11,31,68,.16)}
-.eyebrow{display:flex;align-items:center;gap:13px;color:#d1e3ff;font-size:clamp(14px,2vw,21px);letter-spacing:.035em;text-transform:uppercase}
-.eyebrow svg{width:34px;height:34px;flex:0 0 34px;stroke:#8bd5ff}
-.big{font-size:clamp(42px,7vw,76px);font-weight:850;letter-spacing:-.045em;line-height:1.1;margin:10px 0}
-.sub{font-size:clamp(16px,2.4vw,25px);color:#e0eaff}
-.batch{border-top:1px solid #b8d1f277;margin-top:23px;padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:clamp(16px,2.3vw,24px)}
-.batch span{display:flex;align-items:center;gap:14px}
-.batch svg{width:34px;height:34px;stroke:#9bdcff;flex:0 0 34px}
-.batch b{font-size:clamp(19px,3vw,31px);white-space:nowrap}
-footer{text-align:center;color:#5c6e8e;font-size:14px;padding:18px 10px 28px}
-@media(max-width:620px){
- header{padding:24px 16px 42px}.header-inner{gap:12px}.logo{width:58px;height:58px;flex-basis:58px}.printer-art{width:65px;height:62px;flex-basis:65px}
- main{padding:0 10px}.card{padding:17px 13px;border-radius:24px}h2{margin-bottom:17px;gap:9px}h2 svg{width:30px;height:30px;flex-basis:30px}
- .fields{gap:10px}.field{min-height:105px;padding:9px;grid-template-columns:42px minmax(0,1fr);gap:8px;border-radius:15px}
- .field-icon{width:42px;height:42px;border-radius:13px}.field-icon svg{width:27px;height:27px}
- label{font-size:12px;min-height:29px;margin-bottom:5px}.unit input{height:46px;padding-left:9px;padding-right:42px;font-size:19px;border-radius:11px}.suffix{right:8px;font-size:11px}
- .result{margin-top:16px;padding:20px 17px;border-radius:21px}.eyebrow{font-size:13px;gap:9px}.eyebrow svg{width:27px;height:27px;flex-basis:27px}.big{font-size:43px;margin:9px 0}.sub{font-size:16px}.batch{margin-top:17px;padding-top:14px;font-size:15px;gap:8px}.batch span{gap:8px}.batch svg{width:27px;height:27px;flex-basis:27px}.batch b{font-size:19px}
-}
-@media(max-width:360px){.field{grid-template-columns:34px minmax(0,1fr);gap:6px;padding:7px}.field-icon{width:34px;height:34px}.field-icon svg{width:23px;height:23px}.unit input{font-size:17px;padding-right:35px}.suffix{font-size:10px;right:6px}}
-</style>
-</head>
+:root{--navy:#0c1b36;--blue:#0878f9;--ink:#142344;--muted:#64799e;--line:#cbd8ec}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#eaf1fc,#f8faff);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+header{background:radial-gradient(ellipse at 88% 85%,#164b9b,transparent 34%),linear-gradient(115deg,#09162e,#142d5b 72%,#09152e);color:white;padding:25px 20px 43px}
+.header-inner{max-width:1000px;margin:auto;display:flex;align-items:center;gap:18px}.logo{width:70px;height:70px;color:#20baff;flex:none}.logo svg{width:100%;height:100%}.brand{font-size:clamp(30px,4vw,46px);font-weight:850;letter-spacing:.03em;line-height:1.05}header p{margin:7px 0 0;color:#c3d4f2;font-size:clamp(13px,2vw,19px)}.printer{margin-left:auto;width:105px;height:82px;color:#2bbcff;flex:none}
+main{max-width:1000px;margin:-22px auto 20px;padding:0 16px}.shell{background:#fff;border:1px solid #e2eaf5;border-radius:30px;padding:25px;box-shadow:0 16px 42px #14316020}
+h2{display:flex;align-items:center;gap:13px;margin:0 0 20px;font-size:clamp(23px,3vw,33px)}h2 svg{width:36px;height:36px;flex:none}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 17px}.field{min-width:0;min-height:116px;border:1.5px solid #cbd9ee;border-radius:19px;background:linear-gradient(145deg,#f9fbff,#f1f5fc);padding:12px;display:grid;grid-template-columns:62px minmax(0,1fr);align-items:center;gap:12px}.ico{width:62px;height:62px;border-radius:17px;background:#e1edff;color:#1458b6;display:grid;place-items:center}.ico svg{width:37px;height:37px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.field-content{min-width:0}label{display:block;font-size:clamp(13px,1.6vw,18px);line-height:1.2;margin:0 0 8px;min-height:22px}.unit{position:relative}.unit input{width:100%;height:52px;border:1.5px solid #bdcbe0;border-radius:13px;background:#fff;padding:0 65px 0 13px;font:700 clamp(19px,2.4vw,26px) -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#142344;outline:none;min-width:0}.unit input:focus{border-color:#1685f8;box-shadow:0 0 0 3px #1685f822}.suffix{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:#62799f;font-size:clamp(12px,1.6vw,17px);pointer-events:none;white-space:nowrap}
+.markup{margin-top:14px;background:linear-gradient(110deg,#eaf3ff,#dceaff);border:1.5px solid #c7dcfb;border-radius:19px;padding:13px;display:grid;grid-template-columns:62px minmax(0,1fr) 125px;align-items:center;gap:12px}.markup .ico{background:#d1e5ff}.markup label{font-weight:700}.slider-wrap{display:flex;align-items:center}.slider-wrap input{width:100%;accent-color:#0878f9}.markup .unit input{height:52px;text-align:center;padding:0 36px 0 8px}
+.results{margin-top:24px;padding:24px 27px;border-radius:25px;color:#fff;background:radial-gradient(ellipse at 95% 100%,#174b9d,transparent 37%),linear-gradient(120deg,#0c1b36,#142e5a 72%,#0b1934);box-shadow:0 12px 26px #0b1f4428}.result-title{display:flex;align-items:center;gap:12px;font-size:clamp(20px,2.7vw,29px);font-weight:750;margin-bottom:19px}.result-title svg{width:36px;height:36px;stroke:#a7d9ff;flex:none}.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.price-card{position:relative;border:2px solid #1260c8;border-radius:23px;padding:18px 20px;background:#092b55a8;min-width:0}.price-card.sale{border-color:#00d978;background:#004b3c80}.price-label{font-size:clamp(15px,2vw,21px);line-height:1.25;min-height:52px;color:#f0f5ff}.price-value{font-size:clamp(38px,6vw,65px);font-weight:850;line-height:1.12;letter-spacing:-.04em;white-space:nowrap}.sale .price-value{color:#a5ff38}.percent{position:absolute;right:12px;top:-12px;border-radius:15px;background:#42ed50;color:#062c22;padding:5px 14px;font-weight:850;font-size:19px}
+.breakdown{border-top:1px solid #b8d1f277;margin-top:22px;padding-top:17px}.breakdown h3{font-size:18px;margin:0 0 12px}.cost-columns{display:grid;grid-template-columns:1fr 1fr;gap:22px}.cost-list{min-width:0}.cost-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #b8d1f233;font-size:15px}.cost-row span{color:#e2ebfc}.cost-row b{white-space:nowrap}.cost-row.total{font-size:17px;font-weight:800}.cost-row.highlight b{color:#a5ff38}.right-list{border-left:1px solid #b8d1f277;padding-left:22px}
+footer{text-align:center;color:#5c6e8e;font-size:14px;padding:17px 8px 26px}
+@media(max-width:620px){header{padding:22px 14px 39px}.header-inner{gap:11px}.logo{width:53px;height:53px}.printer{width:60px;height:58px}.brand{font-size:29px}main{padding:0 9px}.shell{padding:16px 12px;border-radius:23px}h2{font-size:22px;margin-bottom:15px;gap:8px}h2 svg{width:29px;height:29px}.fields{gap:9px}.field{min-height:101px;padding:8px;grid-template-columns:39px minmax(0,1fr);gap:7px;border-radius:14px}.ico{width:39px;height:39px;border-radius:12px}.ico svg{width:26px;height:26px}label{font-size:11.5px;min-height:28px;margin-bottom:5px}.unit input{height:44px;padding:0 38px 0 8px;font-size:18px;border-radius:10px}.suffix{right:7px;font-size:10px}.markup{grid-template-columns:39px minmax(0,1fr) 76px;gap:7px;padding:9px;margin-top:10px;border-radius:14px}.markup .ico{width:39px;height:39px}.markup label{font-size:12px;min-height:0}.markup .unit input{height:43px;font-size:18px;padding-right:25px}.results{margin-top:15px;padding:18px 14px;border-radius:20px}.result-title{font-size:20px;margin-bottom:14px;gap:8px}.result-title svg{width:29px;height:29px}.price-grid{gap:9px}.price-card{padding:13px 11px;border-radius:17px}.price-label{font-size:13px;min-height:48px}.price-value{font-size:clamp(29px,7vw,42px)}.percent{font-size:13px;right:8px;padding:4px 9px}.breakdown{margin-top:17px;padding-top:13px}.breakdown h3{font-size:15px}.cost-columns{gap:10px}.right-list{padding-left:10px}.cost-row{font-size:11px;gap:5px;padding:8px 0}.cost-row.total{font-size:12px}.cost-row b{font-size:11px}}
+@media(max-width:360px){.field{grid-template-columns:32px minmax(0,1fr);gap:5px;padding:6px}.ico{width:32px;height:32px}.ico svg{width:22px;height:22px}.unit input{font-size:16px;padding-right:32px}.suffix{font-size:9px}.markup{grid-template-columns:32px minmax(0,1fr) 68px}.markup .ico{width:32px;height:32px}.cost-row{font-size:10px}.cost-row b{font-size:10px}}
+</style></head>
 <body>
 <header><div class="header-inner">
 <div class="logo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><path d="M50 5 91 28 50 51 9 28 50 5Z"/><path d="M9 28v45l41 23V51M91 28v45L50 96"/></svg></div>
-<div><div class="brand">3D COST</div><p>Простой расчёт себестоимости 3D-печати</p></div>
-<div class="printer-art"><svg viewBox="0 0 130 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M48 5h42v12H48zM57 17v23l12 13 12-13V17"/><path d="M69 53v10M30 70h78l-8 12H38zM41 85h56v8H41z"/><path d="M20 63h90" opacity=".6"/></svg></div>
+<div><div class="brand">3D COST</div><p>Калькулятор себестоимости 3D-печати</p></div>
+<div class="printer"><svg viewBox="0 0 130 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M48 5h42v12H48zM57 17v23l12 13 12-13V17M69 53v10M30 70h78l-8 12H38zM41 85h56v8H41z"/></svg></div>
 </div></header>
-<main>
-<section class="card">
+<main><section class="shell">
 <h2><svg viewBox="0 0 40 40" fill="none" stroke="#142344" stroke-width="3.5" stroke-linecap="round"><path d="M20 3v5M20 32v5M3 20h5M32 20h5M8 8l4 4M28 28l4 4M32 8l-4 4M12 28l-4 4"/><circle cx="20" cy="20" r="7"/><circle cx="20" cy="20" r="15"/></svg>Параметры печати</h2>
 <div class="fields">
-<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><path d="M17 12h14l4 27H13l4-27Z"/><path d="M20 12V8a4 4 0 0 1 8 0v4"/></svg></div><div class="field-content"><label for="grams">Вес пластика на всю печать</label><div class="unit"><input id="grams" type="number" min="0" step="1" value="100"><span class="suffix">г</span></div></div></div>
-<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><ellipse cx="19" cy="12" rx="11" ry="5"/><path d="M8 12v8c0 3 5 5 11 5s11-2 11-5v-8M8 20v8c0 3 5 5 11 5 2 0 4-.3 6-1"/><ellipse cx="32" cy="28" rx="9" ry="4"/><path d="M23 28v8c0 2 4 4 9 4s9-2 9-4v-8M23 36v4"/></svg></div><div class="field-content"><label for="filamentPrice">Стоимость пластика за кг</label><div class="unit"><input id="filamentPrice" type="number" min="0" step="10" value="1500"><span class="suffix">₽/кг</span></div></div></div>
-<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><path d="m24 4 17 10v20L24 44 7 34V14L24 4Z"/><path d="m7 14 17 10 17-10M24 24v20"/></svg></div><div class="field-content"><label for="qty">Количество изделий</label><div class="unit"><input id="qty" type="number" min="1" step="1" value="47"><span class="suffix">шт.</span></div></div></div>
-<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><path d="M24 12v13l9 6"/></svg></div><div class="field-content"><label for="hours">Время печати</label><div class="unit"><input id="hours" type="number" min="0" step=".1" value="6"><span class="suffix">час</span></div></div></div>
-<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><rect x="10" y="17" width="28" height="19" rx="3"/><path d="M15 17V7h18v10M16 36v6h16v-6M17 24h14M18 30h12"/></svg></div><div class="field-content"><label for="depreciationRate">Амортизация принтера</label><div class="unit"><input id="depreciationRate" type="number" min="0" step="1" value="100"><span class="suffix">₽/час</span></div></div></div>
-<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><path d="m27 4-19 24h13l-2 16 21-27H26l1-13Z"/></svg></div><div class="field-content"><label for="electricityRate">Электроэнергия</label><div class="unit"><input id="electricityRate" type="number" min="0" step="1" value="10"><span class="suffix">₽/час</span></div></div></div>
+<div class="field"><div class="ico"><svg viewBox="0 0 48 48"><path d="M17 12h14l4 27H13l4-27ZM20 12V8a4 4 0 0 1 8 0v4"/></svg></div><div class="field-content"><label for="grams">Вес пластика на всю печать</label><div class="unit"><input id="grams" type="number" min="0" step="1" value="100"><span class="suffix">г</span></div></div></div>
+<div class="field"><div class="ico"><svg viewBox="0 0 48 48"><ellipse cx="19" cy="12" rx="11" ry="5"/><path d="M8 12v8c0 3 5 5 11 5s11-2 11-5v-8M8 20v8c0 3 5 5 11 5 2 0 4-.3 6-1"/><ellipse cx="32" cy="28" rx="9" ry="4"/><path d="M23 28v8c0 2 4 4 9 4s9-2 9-4v-8M23 36v4"/></svg></div><div class="field-content"><label for="filamentPrice">Цена пластика</label><div class="unit"><input id="filamentPrice" type="number" min="0" step="10" value="1000"><span class="suffix">₽/кг</span></div></div></div>
+<div class="field"><div class="ico"><svg viewBox="0 0 48 48"><path d="m24 4 17 10v20L24 44 7 34V14L24 4Z M7 14l17 10 17-10M24 24v20"/></svg></div><div class="field-content"><label for="qty">Количество изделий</label><div class="unit"><input id="qty" type="number" min="1" step="1" value="47"><span class="suffix">шт.</span></div></div></div>
+<div class="field"><div class="ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><path d="M24 12v13l9 6"/></svg></div><div class="field-content"><label for="hours">Время печати</label><div class="unit"><input id="hours" type="number" min="0" step=".1" value="6"><span class="suffix">час</span></div></div></div>
+<div class="field"><div class="ico"><svg viewBox="0 0 48 48"><rect x="10" y="17" width="28" height="19" rx="3"/><path d="M15 17V7h18v10M16 36v6h16v-6M17 24h14M18 30h12"/></svg></div><div class="field-content"><label for="depreciationRate">Амортизация принтера</label><div class="unit"><input id="depreciationRate" type="number" min="0" step=".5" value="100"><span class="suffix">₽/час</span></div></div></div>
+<div class="field"><div class="ico"><svg viewBox="0 0 48 48"><path d="m27 4-19 24h13l-2 16 21-27H26l1-13Z"/></svg></div><div class="field-content"><label for="electricityRate">Электроэнергия</label><div class="unit"><input id="electricityRate" type="number" min="0" step=".1" value="10"><span class="suffix">₽/час</span></div></div></div>
 </div>
-<div class="result" aria-live="polite">
-<div class="eyebrow"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="m18 3 14 8-14 8-14-8 14-8Z"/><path d="M4 18l14 8 14-8M4 25l14 8 14-8"/></svg>Себестоимость одного изделия</div>
-<div class="big" id="unitCost">— ₽</div>
-<div class="sub" id="perBatch">За всю печать: — ₽</div>
-<div class="batch"><span><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="m18 3 14 8-14 8-14-8 14-8Z"/><path d="M4 11v15l14 8 14-8V11M18 19v15"/></svg>Количество изделий</span><b id="quantityResult">— шт.</b></div>
+<div class="markup"><div class="ico"><svg viewBox="0 0 48 48"><circle cx="14" cy="13" r="7"/><circle cx="34" cy="35" r="7"/><path d="m10 39 28-30"/></svg></div><div class="field-content"><label for="markup">Наценка (прибыль)</label><div class="slider-wrap"><input id="markupSlider" type="range" min="0" max="300" step="5" value="50" aria-label="Наценка, ползунок"></div></div><div class="unit"><input id="markup" type="number" min="0" max="1000" step="1" value="50"><span class="suffix">%</span></div></div>
+<div class="results" aria-live="polite">
+<div class="result-title"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="m18 3 14 8-14 8-14-8 14-8Z M4 18l14 8 14-8M4 25l14 8 14-8"/></svg>Результаты расчёта</div>
+<div class="price-grid">
+<div class="price-card"><div class="price-label">Себестоимость<br>одного изделия</div><div class="price-value" id="unitCost">— ₽</div></div>
+<div class="price-card sale"><div class="percent" id="percentBadge">+50%</div><div class="price-label">Рекомендуемая<br>цена продажи</div><div class="price-value" id="salePrice">— ₽</div></div>
 </div>
-</section>
-<footer>3D COST · Расчёт выполняется прямо в браузере</footer>
-</main>
+<div class="breakdown"><h3 id="batchHeading">Расходы на всю партию</h3><div class="cost-columns">
+<div class="cost-list">
+<div class="cost-row"><span>Пластик</span><b id="plasticCost">— ₽</b></div>
+<div class="cost-row"><span>Амортизация</span><b id="depreciationCost">— ₽</b></div>
+<div class="cost-row"><span>Электроэнергия</span><b id="electricityCost">— ₽</b></div>
+<div class="cost-row total"><span>Итого расходы</span><b id="totalCost">— ₽</b></div>
+</div><div class="cost-list right-list">
+<div class="cost-row"><span>Себестоимость партии</span><b id="batchCost">— ₽</b></div>
+<div class="cost-row"><span>Себестоимость 1 изделия</span><b id="unitCostSmall">— ₽</b></div>
+<div class="cost-row highlight"><span>Цена продажи (с наценкой)</span><b id="salePriceSmall">— ₽</b></div>
+</div></div></div>
+</div></section><footer>3D COST · Расчёт выполняется прямо в браузере</footer></main>
 <script>
 const $=id=>document.getElementById(id);
 const num=id=>Math.max(0,Number($(id).value)||0);
-const money=n=>new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+const money=n=>new Intl.NumberFormat('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)+' ₽';
 function calculate(){
  const grams=num('grams'),price=num('filamentPrice'),qty=Math.max(1,Math.floor(num('qty'))),hours=num('hours');
- const depreciationRate=num('depreciationRate'),electricityRate=num('electricityRate');
- const plastic=grams*price/1000;
- const printer=hours*depreciationRate;
- const electricity=hours*electricityRate;
- const batch=plastic+printer+electricity;
- const unit=batch/qty;
- $('unitCost').textContent=money(unit);
- $('perBatch').textContent='За всю печать: '+money(batch);
- $('quantityResult').textContent=qty+' шт.';
+ const depRate=num('depreciationRate'),elecRate=num('electricityRate'),markup=num('markup');
+ const plastic=grams*price/1000, depreciation=hours*depRate, electricity=hours*elecRate;
+ const batch=plastic+depreciation+electricity, unit=batch/qty, sale=unit*(1+markup/100);
+ $('unitCost').textContent=money(unit);$('salePrice').textContent=money(sale);
+ $('percentBadge').textContent='+'+markup+'%';$('batchHeading').textContent='Расходы на всю партию ('+qty+' шт.)';
+ $('plasticCost').textContent=money(plastic);$('depreciationCost').textContent=money(depreciation);
+ $('electricityCost').textContent=money(electricity);$('totalCost').textContent=money(batch);
+ $('batchCost').textContent=money(batch);$('unitCostSmall').textContent=money(unit);
+ $('salePriceSmall').textContent=money(sale);
+ $('markupSlider').value=Math.min(300,markup);
 }
-['grams','filamentPrice','qty','hours','depreciationRate','electricityRate'].forEach(id=>$(id).addEventListener('input',calculate));
+['grams','filamentPrice','qty','hours','depreciationRate','electricityRate','markup'].forEach(id=>$(id).addEventListener('input',calculate));
+$('markupSlider').addEventListener('input',()=>{$('markup').value=$('markupSlider').value;calculate()});
 calculate();
-</script>
-</body>
-</html>
+</script></body></html>
