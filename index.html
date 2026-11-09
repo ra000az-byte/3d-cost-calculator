@@ -3,40 +3,76 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
+<meta name="theme-color" content="#101d3b">
 <title>3D COST — себестоимость печати</title>
 <style>
-:root{--bg:#f3f5f8;--card:#fff;--ink:#172033;--muted:#748094;--line:#e5e9f0;--accent:#2563eb;--green:#0f9f6e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-header{background:#111827;color:#fff;padding:25px 18px 38px}.wrap{max-width:680px;margin:auto}.brand{font-size:23px;font-weight:850;letter-spacing:.08em}header p{color:#aeb9ca;margin:7px 0 0;font-size:13px}
-main{max-width:680px;margin:-17px auto 35px;padding:0 14px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 8px 28px rgba(20,35,60,.07)}
-h2{font-size:17px;margin:0 0 16px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-label{display:block;font-size:13px;color:var(--muted);margin:0 0 6px}.unit{position:relative}.unit input{width:100%;height:48px;border:1px solid #dce2eb;border-radius:11px;padding:0 48px 0 12px;font:inherit;color:var(--ink);background:#fff;outline:none}.unit input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #2563eb18}.suffix{position:absolute;right:12px;top:13px;color:#8a95a6;font-size:13px;pointer-events:none}
-.rate-field{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:11px 12px}.rate-field label{margin-bottom:6px}.rate-field .unit input{height:42px;background:#fff}
-.result{margin-top:15px;background:#111827;color:#fff;border-radius:20px;padding:22px}.eyebrow{color:#aeb9ca;font-size:12px;letter-spacing:.06em;text-transform:uppercase}.big{font-size:40px;font-weight:850;letter-spacing:-.04em;margin:5px 0}.sub{font-size:13px;color:#aeb9ca}.batch{border-top:1px solid #ffffff20;margin-top:17px;padding-top:14px;display:flex;justify-content:space-between;gap:12px;font-size:14px}.batch b{font-size:17px}
-button{width:100%;margin-top:16px;border:0;border-radius:11px;padding:13px;background:var(--accent);color:#fff;font:600 15px inherit;cursor:pointer}
-footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
-@media(max-width:420px){.fields{gap:12px}.card{padding:16px}.big{font-size:35px}.unit input{font-size:15px}}
+:root{--navy:#101d3b;--navy2:#142d5b;--blue:#0878f9;--ink:#142344;--muted:#627596;--line:#cbd7e9;--pale:#f4f7fc}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#eaf1fc 0%,#f7f9fd 60%);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+header{background:radial-gradient(ellipse at 85% 80%,#164b9b 0%,transparent 34%),linear-gradient(115deg,#0b1732,#142d5b 72%,#09152e);color:#fff;padding:28px 22px 48px;overflow:hidden}
+.header-inner{max-width:980px;margin:auto;display:flex;align-items:center;gap:20px;position:relative}
+.logo{width:82px;height:82px;flex:0 0 82px;color:#21b7ff}
+.logo svg{width:100%;height:100%}
+.brand{font-size:clamp(28px,4vw,46px);font-weight:850;letter-spacing:.035em;line-height:1.05}
+header p{color:#bdcce8;margin:8px 0 0;font-size:clamp(13px,2vw,20px)}
+.printer-art{margin-left:auto;width:115px;height:90px;flex:0 0 115px;color:#26baff;opacity:.9}
+main{max-width:980px;margin:-22px auto 24px;padding:0 18px;position:relative}
+.card{background:rgba(255,255,255,.97);border:1px solid #e3eaf5;border-radius:30px;padding:28px;box-shadow:0 16px 42px rgba(20,49,96,.13)}
+h2{display:flex;align-items:center;gap:14px;font-size:clamp(22px,3vw,34px);margin:0 0 24px;font-weight:800}
+h2 svg{width:38px;height:38px;flex:0 0 38px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 18px}
+.field{min-width:0;min-height:126px;border:1.5px solid #c7d4e8;border-radius:20px;background:linear-gradient(145deg,#f8faff,#f1f5fc);padding:13px 14px;display:grid;grid-template-columns:68px minmax(0,1fr);align-items:center;gap:14px}
+.field-icon{width:68px;height:68px;border-radius:19px;background:#e1ecff;color:#1554ae;display:grid;place-items:center}
+.field-icon svg{width:40px;height:40px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.field-content{min-width:0}
+label{display:block;color:#17294b;font-size:clamp(13px,1.65vw,19px);line-height:1.2;margin:0 0 9px}
+.unit{position:relative}
+.unit input{display:block;width:100%;height:56px;border:1.5px solid #bdcbe0;border-radius:14px;background:#fff;padding:0 68px 0 14px;color:#142344;font:700 clamp(19px,2.5vw,27px) -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;outline:none;box-shadow:inset 0 1px 2px rgba(15,38,75,.04);min-width:0}
+.unit input:focus{border-color:#1685f8;box-shadow:0 0 0 3px #1685f822}
+.suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#64799e;font-size:clamp(12px,1.7vw,18px);pointer-events:none;white-space:nowrap}
+.result{margin-top:24px;background:radial-gradient(ellipse at 95% 100%,#174b9d 0%,transparent 38%),linear-gradient(120deg,#101d3b,#142d5b 72%,#0c1a36);color:#fff;border-radius:26px;padding:27px 32px;box-shadow:0 12px 26px rgba(11,31,68,.16)}
+.eyebrow{display:flex;align-items:center;gap:13px;color:#d1e3ff;font-size:clamp(14px,2vw,21px);letter-spacing:.035em;text-transform:uppercase}
+.eyebrow svg{width:34px;height:34px;flex:0 0 34px;stroke:#8bd5ff}
+.big{font-size:clamp(42px,7vw,76px);font-weight:850;letter-spacing:-.045em;line-height:1.1;margin:10px 0}
+.sub{font-size:clamp(16px,2.4vw,25px);color:#e0eaff}
+.batch{border-top:1px solid #b8d1f277;margin-top:23px;padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:clamp(16px,2.3vw,24px)}
+.batch span{display:flex;align-items:center;gap:14px}
+.batch svg{width:34px;height:34px;stroke:#9bdcff;flex:0 0 34px}
+.batch b{font-size:clamp(19px,3vw,31px);white-space:nowrap}
+footer{text-align:center;color:#5c6e8e;font-size:14px;padding:18px 10px 28px}
+@media(max-width:620px){
+ header{padding:24px 16px 42px}.header-inner{gap:12px}.logo{width:58px;height:58px;flex-basis:58px}.printer-art{width:65px;height:62px;flex-basis:65px}
+ main{padding:0 10px}.card{padding:17px 13px;border-radius:24px}h2{margin-bottom:17px;gap:9px}h2 svg{width:30px;height:30px;flex-basis:30px}
+ .fields{gap:10px}.field{min-height:105px;padding:9px;grid-template-columns:42px minmax(0,1fr);gap:8px;border-radius:15px}
+ .field-icon{width:42px;height:42px;border-radius:13px}.field-icon svg{width:27px;height:27px}
+ label{font-size:12px;min-height:29px;margin-bottom:5px}.unit input{height:46px;padding-left:9px;padding-right:42px;font-size:19px;border-radius:11px}.suffix{right:8px;font-size:11px}
+ .result{margin-top:16px;padding:20px 17px;border-radius:21px}.eyebrow{font-size:13px;gap:9px}.eyebrow svg{width:27px;height:27px;flex-basis:27px}.big{font-size:43px;margin:9px 0}.sub{font-size:16px}.batch{margin-top:17px;padding-top:14px;font-size:15px;gap:8px}.batch span{gap:8px}.batch svg{width:27px;height:27px;flex-basis:27px}.batch b{font-size:19px}
+}
+@media(max-width:360px){.field{grid-template-columns:34px minmax(0,1fr);gap:6px;padding:7px}.field-icon{width:34px;height:34px}.field-icon svg{width:23px;height:23px}.unit input{font-size:17px;padding-right:35px}.suffix{font-size:10px;right:6px}}
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="brand">3D COST</div><p>Простой расчёт себестоимости 3D-печати</p></div></header>
+<header><div class="header-inner">
+<div class="logo"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"><path d="M50 5 91 28 50 51 9 28 50 5Z"/><path d="M9 28v45l41 23V51M91 28v45L50 96"/></svg></div>
+<div><div class="brand">3D COST</div><p>Простой расчёт себестоимости 3D-печати</p></div>
+<div class="printer-art"><svg viewBox="0 0 130 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M48 5h42v12H48zM57 17v23l12 13 12-13V17"/><path d="M69 53v10M30 70h78l-8 12H38zM41 85h56v8H41z"/><path d="M20 63h90" opacity=".6"/></svg></div>
+</div></header>
 <main>
 <section class="card">
-<h2>Параметры печати</h2>
+<h2><svg viewBox="0 0 40 40" fill="none" stroke="#142344" stroke-width="3.5" stroke-linecap="round"><path d="M20 3v5M20 32v5M3 20h5M32 20h5M8 8l4 4M28 28l4 4M32 8l-4 4M12 28l-4 4"/><circle cx="20" cy="20" r="7"/><circle cx="20" cy="20" r="15"/></svg>Параметры печати</h2>
 <div class="fields">
-<div><label for="grams">Вес пластика на всю печать</label><div class="unit"><input id="grams" type="number" min="0" step="1" value="100"><span class="suffix">г</span></div></div>
-<div><label for="filamentPrice">Стоимость пластика за кг</label><div class="unit"><input id="filamentPrice" type="number" min="0" step="10" value="1500"><span class="suffix">₽/кг</span></div></div>
-<div><label for="qty">Количество изделий на столе</label><div class="unit"><input id="qty" type="number" min="1" step="1" value="47"><span class="suffix">шт.</span></div></div>
-<div><label for="hours">Время печати</label><div class="unit"><input id="hours" type="number" min="0" step=".1" value="6"><span class="suffix">час</span></div></div>
-<div class="rate-field"><label for="depreciationRate">Амортизация принтера</label><div class="unit"><input id="depreciationRate" type="number" min="0" step="1" value="100"><span class="suffix">₽/час</span></div></div>
-<div class="rate-field"><label for="electricityRate">Электроэнергия</label><div class="unit"><input id="electricityRate" type="number" min="0" step="1" value="10"><span class="suffix">₽/час</span></div></div>
+<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><path d="M17 12h14l4 27H13l4-27Z"/><path d="M20 12V8a4 4 0 0 1 8 0v4"/></svg></div><div class="field-content"><label for="grams">Вес пластика на всю печать</label><div class="unit"><input id="grams" type="number" min="0" step="1" value="100"><span class="suffix">г</span></div></div></div>
+<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><ellipse cx="19" cy="12" rx="11" ry="5"/><path d="M8 12v8c0 3 5 5 11 5s11-2 11-5v-8M8 20v8c0 3 5 5 11 5 2 0 4-.3 6-1"/><ellipse cx="32" cy="28" rx="9" ry="4"/><path d="M23 28v8c0 2 4 4 9 4s9-2 9-4v-8M23 36v4"/></svg></div><div class="field-content"><label for="filamentPrice">Стоимость пластика за кг</label><div class="unit"><input id="filamentPrice" type="number" min="0" step="10" value="1500"><span class="suffix">₽/кг</span></div></div></div>
+<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><path d="m24 4 17 10v20L24 44 7 34V14L24 4Z"/><path d="m7 14 17 10 17-10M24 24v20"/></svg></div><div class="field-content"><label for="qty">Количество изделий</label><div class="unit"><input id="qty" type="number" min="1" step="1" value="47"><span class="suffix">шт.</span></div></div></div>
+<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><path d="M24 12v13l9 6"/></svg></div><div class="field-content"><label for="hours">Время печати</label><div class="unit"><input id="hours" type="number" min="0" step=".1" value="6"><span class="suffix">час</span></div></div></div>
+<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><rect x="10" y="17" width="28" height="19" rx="3"/><path d="M15 17V7h18v10M16 36v6h16v-6M17 24h14M18 30h12"/></svg></div><div class="field-content"><label for="depreciationRate">Амортизация принтера</label><div class="unit"><input id="depreciationRate" type="number" min="0" step="1" value="100"><span class="suffix">₽/час</span></div></div></div>
+<div class="field"><div class="field-icon"><svg viewBox="0 0 48 48"><path d="m27 4-19 24h13l-2 16 21-27H26l1-13Z"/></svg></div><div class="field-content"><label for="electricityRate">Электроэнергия</label><div class="unit"><input id="electricityRate" type="number" min="0" step="1" value="10"><span class="suffix">₽/час</span></div></div></div>
 </div>
 <div class="result" aria-live="polite">
-<div class="eyebrow">Себестоимость одного изделия</div>
+<div class="eyebrow"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="m18 3 14 8-14 8-14-8 14-8Z"/><path d="M4 18l14 8 14-8M4 25l14 8 14-8"/></svg>Себестоимость одного изделия</div>
 <div class="big" id="unitCost">— ₽</div>
 <div class="sub" id="perBatch">За всю печать: — ₽</div>
-<div class="batch"><span>Количество изделий</span><b id="quantityResult">— шт.</b></div>
+<div class="batch"><span><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><path d="m18 3 14 8-14 8-14-8 14-8Z"/><path d="M4 11v15l14 8 14-8V11M18 19v15"/></svg>Количество изделий</span><b id="quantityResult">— шт.</b></div>
 </div>
 </section>
 <footer>3D COST · Расчёт выполняется прямо в браузере</footer>
