@@ -12,7 +12,7 @@ header{background:#111827;color:#fff;padding:25px 18px 38px}.wrap{max-width:680p
 main{max-width:680px;margin:-17px auto 35px;padding:0 14px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 8px 28px rgba(20,35,60,.07)}
 h2{font-size:17px;margin:0 0 16px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 label{display:block;font-size:13px;color:var(--muted);margin:0 0 6px}.unit{position:relative}.unit input{width:100%;height:48px;border:1px solid #dce2eb;border-radius:11px;padding:0 48px 0 12px;font:inherit;color:var(--ink);background:#fff;outline:none}.unit input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #2563eb18}.suffix{position:absolute;right:12px;top:13px;color:#8a95a6;font-size:13px;pointer-events:none}
-.fixed{grid-column:1/-1;background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;gap:12px;font-size:14px}.fixed span{color:var(--muted)}.fixed b{white-space:nowrap}
+.rate-field{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:11px 12px}.rate-field label{margin-bottom:6px}.rate-field .unit input{height:42px;background:#fff}
 .result{margin-top:15px;background:#111827;color:#fff;border-radius:20px;padding:22px}.eyebrow{color:#aeb9ca;font-size:12px;letter-spacing:.06em;text-transform:uppercase}.big{font-size:40px;font-weight:850;letter-spacing:-.04em;margin:5px 0}.sub{font-size:13px;color:#aeb9ca}.batch{border-top:1px solid #ffffff20;margin-top:17px;padding-top:14px;display:flex;justify-content:space-between;gap:12px;font-size:14px}.batch b{font-size:17px}
 button{width:100%;margin-top:16px;border:0;border-radius:11px;padding:13px;background:var(--accent);color:#fff;font:600 15px inherit;cursor:pointer}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
@@ -29,8 +29,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 <div><label for="filamentPrice">Стоимость пластика за кг</label><div class="unit"><input id="filamentPrice" type="number" min="0" step="10" value="1500"><span class="suffix">₽/кг</span></div></div>
 <div><label for="qty">Количество изделий на столе</label><div class="unit"><input id="qty" type="number" min="1" step="1" value="47"><span class="suffix">шт.</span></div></div>
 <div><label for="hours">Время печати</label><div class="unit"><input id="hours" type="number" min="0" step=".1" value="6"><span class="suffix">час</span></div></div>
-<div class="fixed"><span>Амортизация принтера</span><b>100 ₽ / час</b></div>
-<div class="fixed"><span>Электроэнергия</span><b>10 ₽ / час</b></div>
+<div class="rate-field"><label for="depreciationRate">Амортизация принтера</label><div class="unit"><input id="depreciationRate" type="number" min="0" step="1" value="100"><span class="suffix">₽/час</span></div></div>
+<div class="rate-field"><label for="electricityRate">Электроэнергия</label><div class="unit"><input id="electricityRate" type="number" min="0" step="1" value="10"><span class="suffix">₽/час</span></div></div>
 </div>
 <div class="result" aria-live="polite">
 <div class="eyebrow">Себестоимость одного изделия</div>
@@ -48,16 +48,17 @@ const num=id=>Math.max(0,Number($(id).value)||0);
 const money=n=>new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
 function calculate(){
  const grams=num('grams'),price=num('filamentPrice'),qty=Math.max(1,Math.floor(num('qty'))),hours=num('hours');
+ const depreciationRate=num('depreciationRate'),electricityRate=num('electricityRate');
  const plastic=grams*price/1000;
- const printer=hours*100;
- const electricity=hours*10;
+ const printer=hours*depreciationRate;
+ const electricity=hours*electricityRate;
  const batch=plastic+printer+electricity;
  const unit=batch/qty;
  $('unitCost').textContent=money(unit);
  $('perBatch').textContent='За всю печать: '+money(batch);
  $('quantityResult').textContent=qty+' шт.';
 }
-['grams','filamentPrice','qty','hours'].forEach(id=>$(id).addEventListener('input',calculate));
+['grams','filamentPrice','qty','hours','depreciationRate','electricityRate'].forEach(id=>$(id).addEventListener('input',calculate));
 $('calculate').addEventListener('click',calculate);
 calculate();
 </script>
