@@ -38,7 +38,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 <div class="sub" id="perBatch">За всю печать: — ₽</div>
 <div class="batch"><span>Количество изделий</span><b id="quantityResult">— шт.</b></div>
 </div>
-<button id="calculate" type="button">Рассчитать</button>
 </section>
 <footer>3D COST · Расчёт выполняется прямо в браузере</footer>
 </main>
@@ -59,7 +58,6 @@ function calculate(){
  $('quantityResult').textContent=qty+' шт.';
 }
 ['grams','filamentPrice','qty','hours','depreciationRate','electricityRate'].forEach(id=>$(id).addEventListener('input',calculate));
-$('calculate').addEventListener('click',calculate);
 calculate();
 </script>
 </body>
