@@ -55,8 +55,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:12px}
 <section class="card">
 <h2>Принтер и дополнительные затраты</h2><p class="sub">Настройки оборудования можно менять под реальные условия</p>
 <div class="fields">
-<div class="field"><label>Стоимость принтера</label><div class="unit"><input id="printerPrice" type="number" min="0" step="1000" value="50000"><span>₽</span></div></div>
-<div class="field"><label>Ресурс амортизации</label><div class="unit"><input id="printerLife" type="number" min="1" step="100" value="5000"><span>час</span></div></div>
+<div class="field"><label>Амортизация принтера за час</label><div class="unit"><input id="printerHourRate" type="number" min="0" step="5" value="100"><span>₽/час</span></div></div>
 <div class="field"><label>Средняя мощность</label><div class="unit"><input id="power" type="number" min="0" step=".01" value=".15"><span>кВт</span></div></div>
 <div class="field"><label>Тариф электричества</label><div class="unit"><input id="electricRate" type="number" min="0" step=".1" value="10"><span>₽/кВт·ч</span></div></div>
 <div class="field"><label>Обслуживание и расходники</label><div class="unit"><input id="serviceHour" type="number" min="0" step=".5" value="2"><span>₽/час</span></div></div>
@@ -84,7 +83,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:12px}
 <div class="line"><span>Труд и прочее</span><b id="rExtra">—</b></div>
 </div>
 <div class="actions"><button class="primary" id="calculate">Рассчитать</button><button class="secondary" id="save">Сохранить расчёт</button><button class="secondary" id="csv">Скачать CSV</button><button class="secondary" id="reset">Сбросить</button></div>
-<div class="note">Расчёт обновляется автоматически при изменении полей. Кнопка «Рассчитать» запускает его вручную. Электроэнергия считается по введённой средней мощности; резерв брака добавляется к производственным затратам.</div>
+<div class="note">Расчёт обновляется автоматически при изменении полей. Кнопка «Рассчитать» запускает его вручную. Амортизация принтера рассчитывается по фиксированной ставке за каждый час печати (по умолчанию 100 ₽/час). Обслуживание и электроэнергия учитываются отдельно; резерв брака добавляется к производственным затратам.</div>
 </section>
 </div>
 <section class="card history">
@@ -93,14 +92,14 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:12px}
 <footer>3D COST · Данные хранятся локально в этом браузере и не отправляются на сервер.</footer>
 </main>
 <script>
-const ids=['name','material','printHours','grams','qty','filamentPrice','printerPrice','printerLife','power','electricRate','serviceHour','labor','other','defect'];
+const ids=['name','material','printHours','grams','qty','filamentPrice','printerHourRate','power','electricRate','serviceHour','labor','other','defect'];
 const $=id=>document.getElementById(id);
 const val=id=>Number($(id).value)||0;
 const rub=n=>new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:2}).format(Number.isFinite(n)?n:0);
 function calc(){
- const h=val('printHours'),g=val('grams'),q=Math.max(1,Math.floor(val('qty'))),life=val('printerLife');
+ const h=val('printHours'),g=val('grams'),q=Math.max(1,Math.floor(val('qty')));
  const plastic=g*val('filamentPrice')/1000,electricity=h*val('power')*val('electricRate');
- const depreciation=life>0?h*val('printerPrice')/life:0,service=h*val('serviceHour');
+ const depreciation=h*val('printerHourRate'),service=h*val('serviceHour');
  const extra=val('labor')+val('other'),base=plastic+electricity+depreciation+service+extra;
  const defect=base*val('defect')/100,total=base+defect,unit=total/q;
  $('unitCost').innerHTML=rub(unit)+' <small>₽/шт.</small>';$('batchCost').textContent='Общая себестоимость партии: '+rub(total);
@@ -116,7 +115,7 @@ function drawHistory(){const a=getHistory();if(!a.length){$('historyWrap').inner
  $('historyWrap').innerHTML='<table><thead><tr><th>Дата</th><th>Изделие</th><th>Партия</th><th>Себест./шт.</th><th>Затраты партии</th></tr></thead><tbody>'+a.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.name)+'</td><td>'+x.q+' шт.</td><td>'+rub(x.unit)+'</td><td>'+rub(x.total)+'</td></tr>').join('')+'</tbody></table>'}
 $('calculate').onclick=()=>{calc();$('calculate').textContent='Готово ✓';setTimeout(()=>$('calculate').textContent='Рассчитать',1100)};
 $('save').onclick=()=>{const x=calc(),a=getHistory();a.unshift(x);localStorage.setItem('3dcost_history',JSON.stringify(a.slice(0,50)));drawHistory()};
-$('reset').onclick=()=>{if(!confirm('Вернуть исходные параметры?'))return;const d={name:'Новая модель',material:'PLA',printHours:6,grams:100,qty:47,filamentPrice:1500,printerPrice:50000,printerLife:5000,power:.15,electricRate:10,serviceHour:2,labor:0,other:0,defect:5};ids.forEach(k=>$(k).value=d[k]);calc()};
+$('reset').onclick=()=>{if(!confirm('Вернуть исходные параметры?'))return;const d={name:'Новая модель',material:'PLA',printHours:6,grams:100,qty:47,filamentPrice:1500,printerHourRate:100,power:.15,electricRate:10,serviceHour:2,labor:0,other:0,defect:5};ids.forEach(k=>$(k).value=d[k]);calc()};
 $('csv').onclick=()=>{const x=calc(),rows=[['Показатель','Значение'],['Изделие',x.name],['Материал',x.material],['Время печати, ч',x.h],['Пластик, г',x.g],['Количество, шт.',x.q],['Себестоимость партии, ₽',x.total],['Себестоимость штуки, ₽',x.unit]];
  const csv='\uFEFF'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\n'),a=document.createElement('a'),url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='3d-cost-'+Date.now()+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
 calc();drawHistory();
